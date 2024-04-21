@@ -1,14 +1,14 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Home } from './components';
+import GlobalStyles from './styles';
 
 function App() {
   return (
     <>
+      <GlobalStyles />
       <Routes>
-        <Route path='/'>
-          <Home />
-        </Route>
+        <Route path='/' element={<Home />} />
       </Routes>
     </>
   );

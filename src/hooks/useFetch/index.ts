@@ -16,11 +16,14 @@ const useFetch = (params: Filter): Response => {
   useEffect(() => {
     axios
       .get('/games', {
-        baseURL: `https://${process.env.BASE_URL}/api`,
-        headers: {
-          //   'x-rapidapi-key': API_KEY,
-          //   'x-rapidapi-host': process.env.BASE_URL,
-        },
+        baseURL: `https://cors-anywhere.herokuapp.com/https://${process.env.REACT_APP_BASE_URL}/api`,
+        // headers: {
+        //   // 'x-rapidapi-key': process.env.REACT_APP_API_KEY,
+        //   // 'x-rapidapi-host': process.env.REACT_APP_BASE_URL,
+        //   // 'Access-Control-Allow-Origin': true,
+        //   // 'Access-Control-Allow-Methods': 'GET',
+        //   // 'Content-Type': 'application/json',
+        // },
         params: {
           platform,
           category: genre,
@@ -28,7 +31,10 @@ const useFetch = (params: Filter): Response => {
           'sort-by': sortBy,
         },
       })
-      .then((res) => setGames(res.data))
+      .then((res) => {
+        console.log(res.data);
+        setGames(res.data);
+      })
       .catch((e) => setErr(e.message));
   }, [platform, genre, tag, sortBy]);
 

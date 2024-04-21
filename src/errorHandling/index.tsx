@@ -1,33 +1,30 @@
-import { ComponentType, FC, useState } from 'react';
+import React, { Component, ComponentClass, ComponentType } from 'react';
 
-interface WrappedComponentProps {
-  // Define props for the wrapped component
+interface State {
   hasError: boolean;
 }
 
-interface ErrorBoundaryProps {
-  onError: (error: Error) => void;
-}
-
-const withErrorBoundary = <T extends WrappedComponentProps>(
+const withErrorBoundary = <T extends Record<string, never>>(
   WrappedComponent: ComponentType<T>
-) => {
-  const ErrorBoundary: FC<T & ErrorBoundaryProps> = (props) => {
-    const [hasError, setHasError] = useState(false);
-
-    const handleOnError = (error: Error) => {
-      console.error(error);
-      setHasError(true);
-    };
-
-    if (hasError) {
-      return <p>Something went wrong!</p>;
+): ComponentClass<T, State> =>
+  class ErrorBoundary extends Component<T, State> {
+    constructor(props: T) {
+      super(props);
+      this.state = { hasError: false };
     }
 
-    return <WrappedComponent {...(props as T)} onError={handleOnError} />;
-  };
+    static getDerivedStateFromError(error: Error) {
+      console.error(error);
+      return { hasError: true };
+    }
 
-  return ErrorBoundary;
-};
+    render() {
+      if (this.state.hasError) {
+        return <p>Something went wrong.</p>;
+      }
+
+      return <WrappedComponent {...this.props} />;
+    }
+  };
 
 export default withErrorBoundary;

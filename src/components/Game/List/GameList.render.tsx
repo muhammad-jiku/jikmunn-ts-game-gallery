@@ -9,7 +9,11 @@ interface Props {
   onFilterChange: (e: ChangeEvent<HTMLFormElement>) => void;
 }
 
-const GameList = ({ err, games, onFilterChange }: Props): ReactElement => {
+const GameListRender = ({
+  err,
+  games,
+  onFilterChange,
+}: Props): ReactElement => {
   if (err) {
     return <p>Unable to fetch games</p>;
   }
@@ -30,4 +34,4 @@ const GameList = ({ err, games, onFilterChange }: Props): ReactElement => {
   );
 };
 
-export default GameList;
+export default GameListRender;
